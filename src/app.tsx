@@ -35,7 +35,8 @@ export default {
 
 		// -- this somehow works ..
 		// however when passed as a context to /api/whatever .. it does nothing
-		// return await fresh.fetch(req);
+
+		return await fresh.fetch(req); // try to comment this
 
 		return (
 			<html lang="en" request={req} context={{ fresh }} routes={routes}>
