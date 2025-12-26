@@ -1,6 +1,6 @@
 import { createFreshClient } from "../lib/bknd";
 
-async function Loader(props: { url: string }) {
+async function Todos() {
 	const { fresh } = this.context;
 
 	const api = fresh.getApi(this.request);
@@ -14,22 +14,10 @@ async function Home() {
 	return (
 		<>
 			<h1>bknd on mono-jxs</h1>
-
-			<component
-				is={Loader}
-				props={{
-					url: "https://jsonplaceholder.typicode.com/posts/2",
-				}}
-				placeholder={<p>Loading...</p>}
-			/>
+			<component is={Todos} placeholder={<p>Loading...</p>} />
 		</>
 	);
 }
-
-// async function App() {
-// 	const { fresh } = this.context;
-// 	return fresh.fetch(this.request);
-// }
 
 const routes = {
 	"/": Home,
