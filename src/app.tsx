@@ -5,20 +5,24 @@ async function Loader(props: { url: string }) {
 
 	const api = fresh.getApi(this.request);
 
+	await new Promise((resolve) => setTimeout(resolve, 500));
 	const { data } = await api.data.readMany("todos");
-
 	return <pre>{JSON.stringify(data, null, 2)}</pre>;
 }
 
 async function Home() {
 	return (
-		<component
-			is={Loader}
-			props={{
-				url: "https://jsonplaceholder.typicode.com/posts/2",
-			}}
-			placeholder={<p>Loading...</p>}
-		/>
+		<>
+			<h1>bknd on mono-jxs</h1>
+
+			<component
+				is={Loader}
+				props={{
+					url: "https://jsonplaceholder.typicode.com/posts/2",
+				}}
+				placeholder={<p>Loading...</p>}
+			/>
+		</>
 	);
 }
 
