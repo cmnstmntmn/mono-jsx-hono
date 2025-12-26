@@ -1,0 +1,112 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "domzz-worker",
+	"main": "./src/app.tsx",
+	"compatibility_date": "2025-11-25",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": false,
+	"placement": {
+		"mode": "smart"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"limits": {
+		"cpu_ms": 3000
+	},
+	"assets": {
+		"directory": "./public"
+	},
+	"env": {
+		"development": {
+			"name": "domzz-development-local",
+			"vars": {
+				"WORKERS_CI_BRANCH": "$WORKERS_CI_BRANCH",
+				"WORKERS_CI_COMMIT_SHA": "$WORKERS_CI_COMMIT_SHA"
+			},
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"preview_database_id": "00000000-0000-0000-0000-000000000000"
+				}
+			],
+			"r2_buckets": [
+				{
+					"binding": "BUCKET",
+					"bucket_name": "development-bucket"
+				}
+			]
+		},
+		"staging": {
+			"name": "domzz-staging",
+			"vars": {
+				"WORKERS_CI_BRANCH": "$WORKERS_CI_BRANCH",
+				"WORKERS_CI_COMMIT_SHA": "$WORKERS_CI_COMMIT_SHA"
+			},
+			"routes": [
+				{
+					"pattern": "staging.domzz.com",
+					"custom_domain": true,
+					"zone_name": "domzz.com"
+				}
+			],
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "staging-db",
+					"database_id": "ddbf4946-503f-4f22-a933-dc512047f759",
+					"remote": true
+				}
+			],
+			"r2_buckets": [
+				{
+					"binding": "BUCKET",
+					"bucket_name": "staging-bucket"
+				}
+			]
+		},
+		"production": {
+			"name": "domzz-production",
+			"vars": {
+				"WORKERS_CI_BRANCH": "$WORKERS_CI_BRANCH",
+				"WORKERS_CI_COMMIT_SHA": "$WORKERS_CI_COMMIT_SHA"
+			},
+			"routes": [
+				{
+					"pattern": "domzz.com",
+					"custom_domain": true,
+					"zone_name": "domzz.com"
+				},
+				{
+					"pattern": "app.domzz.com",
+					"custom_domain": true,
+					"zone_name": "domzz.com"
+				},
+				{
+					"pattern": "notifications.domzz.com",
+					"custom_domain": true,
+					"zone_name": "domzz.com"
+				},
+				{
+					"pattern": "profiles.domzz.com",
+					"custom_domain": true,
+					"zone_name": "domzz.com"
+				}
+			],
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "production-db",
+					"database_id": "b95fb789-dbb9-4179-9ae4-97f16eca8829",
+					"remote": true
+				}
+			],
+			"r2_buckets": [
+				{
+					"binding": "BUCKET",
+					"bucket_name": "production-bucket"
+				}
+			]
+		}
+	}
+}
