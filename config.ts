@@ -24,7 +24,7 @@ export default {
 					issuer: "domzz",
 					secret: env.SECRET_KEY,
 				},
-				guard: { enabled: true },
+				guard: { enabled: false },
 				allow_register: false,
 				roles: {
 					SYSTEM: {

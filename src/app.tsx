@@ -1,7 +1,11 @@
 import { createFreshClient } from "../lib/bknd";
 
 async function Loader(props: { url: string }) {
-	const data = await fetch(props.url).then((res) => res.json());
+	const { fresh } = this.context;
+
+	const api = fresh.getApi(this.request);
+
+	const { data } = await api.data.readMany("todos");
 
 	return <pre>{JSON.stringify(data, null, 2)}</pre>;
 }
@@ -18,28 +22,28 @@ async function Home() {
 	);
 }
 
-async function App() {
-	const { fresh } = this.context;
-	return fresh.fetch(this.request);
-}
+// async function App() {
+// 	const { fresh } = this.context;
+// 	return fresh.fetch(this.request);
+// }
 
 const routes = {
 	"/": Home,
-	"/api/*": App,
-	"/admin/*": App,
 };
 
 export default {
 	fetch: async (req, env, ctx) => {
+		const url = new URL(req.url);
 		const fresh = await createFreshClient(req, env, ctx);
 
-		// -- this somehow works ..
-		// however when passed as a context to /api/whatever .. it does nothing
+		// -- return bknd
+		if (url.pathname.startsWith("/admin") || url.pathname.startsWith("/api")) {
+			return await fresh.fetch(req);
+		}
 
-		return await fresh.fetch(req); // try to comment this
-
+		// -- continue with mono routes
 		return (
-			<html lang="en" request={req} context={{ fresh }} routes={routes}>
+			<html lang="en" request={req} context={{ fresh, env }} routes={routes}>
 				<router />
 			</html>
 		);
