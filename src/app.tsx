@@ -18,15 +18,15 @@ async function Home() {
 	);
 }
 
-async function Api() {
+async function App() {
 	const { fresh } = this.context;
-
 	return fresh.fetch(this.request);
 }
 
 const routes = {
 	"/": Home,
-	"/api/*": Api,
+	"/api/*": App,
+	"/admin/*": App,
 };
 
 export default {
